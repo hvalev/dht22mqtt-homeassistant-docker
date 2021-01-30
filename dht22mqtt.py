@@ -71,7 +71,7 @@ def log2stdout(timestamp, msg):
 
 
 ###############
-# Polling & Processing functions
+# Polling functions
 ###############
 def getTemperatureJitter(temperature):
     return getTemperature(temperature-0.3), getTemperature(temperature+0.3)
@@ -88,7 +88,7 @@ def getHumidity(humidity):
 
 
 ###############
-# Polling & Processing functions
+# Processing function
 ###############
 def processSensorValue(stack, error, value, value_type):
     # flush stack on accumulation of errors

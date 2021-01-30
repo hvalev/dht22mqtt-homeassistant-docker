@@ -40,7 +40,6 @@ The container offers the following configurable environment variables:</br>
 &emsp;&emsp;```essential``` - Enables basic MQTT communications. </br>
 &emsp;&emsp;```ha``` - Enables home assistant discovery. </br>
 &emsp;&emsp;```full``` - Enables sending information about the outlier detection algorithm internals over to the MQTT broker. </br>
-
 ```logging``` - Logging strategy. Possible values are ```log2stdout|log2file```. Default is ```None```. </br>
 &emsp;&emsp;```log2stdout``` - Forwards logs to stdout, inspectable through ```docker logs dht22mqtt```. </br>
 &emsp;&emsp;```log2file``` - Logs temperature and humidity readings to files timestamped at containers' start. </br>
