@@ -14,7 +14,8 @@ jobs:
   test:
     name: Set up python matrix for testing
     runs-on: ubuntu-18.04
-    python-version: 3.7
+    with:
+      python-version: 3.7
     steps:
       - uses: actions/checkout@master
       - name: Setup Python Matrix
