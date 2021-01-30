@@ -208,15 +208,16 @@ if('essential' in dht22mqtt_mqtt_chatter):
     client.publish(mqtt_topic + "type", "sensor", qos=1, retain=True)
     client.publish(mqtt_topic + "device", "dht22", qos=1, retain=True)
 
-    client.publish(mqtt_topic + "env/pin", dht22mqtt_pin, qos=1, retain=True)
-    client.publish(mqtt_topic + "env/brokeraddr", mqtt_brokeraddr, qos=1, retain=True)
-    client.publish(mqtt_topic + "env/refresh", dht22mqtt_refresh, qos=1, retain=True)
-    client.publish(mqtt_topic + "env/logging", dht22mqtt_logging_mode, qos=1, retain=True)
-    client.publish(mqtt_topic + "env/mqtt_chatter", dht22mqtt_mqtt_chatter, qos=1, retain=True)
+    if('full' in dht22mqtt_mqtt_chatter):
+        client.publish(mqtt_topic + "env/pin", dht22mqtt_pin, qos=1, retain=True)
+        client.publish(mqtt_topic + "env/brokeraddr", mqtt_brokeraddr, qos=1, retain=True)
+        client.publish(mqtt_topic + "env/refresh", dht22mqtt_refresh, qos=1, retain=True)
+        client.publish(mqtt_topic + "env/logging", dht22mqtt_logging_mode, qos=1, retain=True)
+        client.publish(mqtt_topic + "env/mqtt_chatter", dht22mqtt_mqtt_chatter, qos=1, retain=True)
 
-    client.publish(mqtt_topic + "sys/dht22_stack_size", dht22_stack_size, qos=1, retain=True)
-    client.publish(mqtt_topic + "sys/dht22_std_deviation", dht22_std_deviation, qos=1, retain=True)
-    client.publish(mqtt_topic + "sys/dht22_error_count_stack_flush", dht22_error_count_stack_flush, qos=1, retain=True)
+        client.publish(mqtt_topic + "sys/dht22_stack_size", dht22_stack_size, qos=1, retain=True)
+        client.publish(mqtt_topic + "sys/dht22_std_deviation", dht22_std_deviation, qos=1, retain=True)
+        client.publish(mqtt_topic + "sys/dht22_error_count_stack_flush", dht22_error_count_stack_flush, qos=1, retain=True)
 
     client.publish(mqtt_topic + "updated", str(datetime.now()), qos=1, retain=True)
 

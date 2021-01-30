@@ -53,14 +53,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUBUNAME }}
           password: ${{ secrets.DOCKERHUBTOKEN }} 
+      - 
+        name: Get Version
+        uses: battila7/get-version-action@v2.2.1
       -
         name: Run Buildx
         run: |
           docker buildx build --push \
           --tag hvalev/dht22mqtt-homeassistant:latest \
-          --tag hvalev/dht22mqtt-homeassistant:${BUILD_VERSION} \
-          --tag ghcr.io/hvalev/dht22mqtt-homeassistant-docker:latest \
-          --tag ghcr.io/hvalev/dht22mqtt-homeassistant-docker:${BUILD_VERSION} \
+          --tag hvalev/dht22mqtt-homeassistant:${{steps.get_version.outputs.version-without-v}} \
           --platform linux/arm/v7,linux/arm64 .
       - 
         name: Docker Hub Description
@@ -68,4 +69,4 @@ jobs:
         env:
            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUBUNAME }}
            DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUBPWD }}
-           DOCKERHUB_REPOSITORY: hvalev/dht22mqtt
+           DOCKERHUB_REPOSITORY: hvalev/dht22mqtt-homeassistant
