@@ -52,15 +52,16 @@ jobs:
           password: ${{ secrets.DOCKERHUBTOKEN }} 
       - 
         name: Get Version
+        id: get_version
         uses: battila7/get-version-action@v2.2.1
+      - run: echo ${{ steps.get_version.outputs.version }}
+      - run: echo ${{ steps.get_version.outputs.version-without-v }}
       -
         name: Run Buildx
-        with:
-          version: ${{ steps.get_version.outputs.version-without-v }}
         run: |
           docker buildx build --push \
           --tag hvalev/dht22mqtt-homeassistant:latest \
-          --tag hvalev/dht22mqtt-homeassistant:${{ version }} \
+          --tag hvalev/dht22mqtt-homeassistant:${{ steps.get_version.outputs.version-without-v }} \
           --platform linux/arm/v7,linux/arm64 .
       - 
         name: Docker Hub Description
