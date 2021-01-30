@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import board
+
 gpiomapping = {
     2: board.D2,
     3: board.D3,
