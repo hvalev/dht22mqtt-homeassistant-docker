@@ -1,11 +1,11 @@
-name: ci
+name: build
 on:
   push:
     tags:
       - 'v*'
     paths-ignore:
     - 'README.md'
-    #datasets
+    - datasets/**
 
 env:
   BUILD_VERSION: "0.1.0"
@@ -33,14 +33,19 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUBUNAME }}
           password: ${{ secrets.DOCKERHUBTOKEN }} 
+      - 
+        name: Lint with flake8
+        run: |
+          pip install flake8
+          flake8 . --max-line-length=130
       -
         name: Run Buildx
         run: |
           docker buildx build --push \
-          --tag hvalev/dht22mqtt:latest \
-          --tag hvalev/dht22mqtt:${BUILD_VERSION} \
-          --tag ghcr.io/hvalev/dht22mqtt:latest
-          --tag ghcr.io/hvalev/dht22mqtt:${BUILD_VERSION}
+          --tag hvalev/dht22mqtt-homeassistant:latest \
+          --tag hvalev/dht22mqtt-homeassistant:${BUILD_VERSION} \
+          --tag ghcr.io/hvalev/dht22mqtt-homeassistant-docker:latest
+          --tag ghcr.io/hvalev/dht22mqtt-homeassistant-docker:${BUILD_VERSION}
           --platform linux/arm/v7,linux/arm64 .
       - 
         name: Docker Hub Description

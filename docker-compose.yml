@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  dht22mqtt:
+    build: .
+    container_name: dht22mqtt
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
+    environment:
+      - topic=zigbee2mqtt
+      - device_id=dht22
+      - broker=192.168.1.10
+      - pin=4
+      - poll=2
+      - device_type=dht22
+      - unit=C
+      - mqtt_chatter='essential|ha|full'
+      - logging=log2stdout|log2file
+    volumes:
+      - ~/dht22mqttlog:/log
