@@ -34,6 +34,11 @@ jobs:
           username: ${{ secrets.DOCKERHUBUNAME }}
           password: ${{ secrets.DOCKERHUBTOKEN }} 
       - 
+        name: Get python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - 
         name: Lint with flake8
         run: |
           pip install flake8
