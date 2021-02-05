@@ -47,8 +47,8 @@ The container offers the following configurable environment variables:</br>
 ## Connecting your sensor 
 To connect your sensor you can look at the following pinout. Typically each sensor needs to be connected to a power, ground and data pin. The data pin needs to be indicated in the ```pin``` parameter in order to read the sensor readings.
 | ![Raspberry-Pi-GPIO-Header.png](/res/Raspberry-Pi-GPIO-Header.png) | 
-|:--:|:--:|
-| *[source][https://www.raspberrypi-spy.co.uk/2012/06/simple-guide-to-the-rpi-gpio-header-and-pins/*] A depiction of the Raspberry Pi GPIO pin header. ```pin``` is the number following the GPIO label. |
+|:--:|
+| [Image Source.](https://www.raspberrypi-spy.co.uk/2012/06/simple-guide-to-the-rpi-gpio-header-and-pins/) A depiction of the Raspberry Pi GPIO pin header. ```pin``` is the number following the GPIO label. |
 
 ## Outlier detection scheme
 To detect outliers, I'm using the [68–95–99.7 rule](https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule), where I'm using 3 standard deviations from the mean. 
