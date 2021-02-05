@@ -5,6 +5,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+import warnings
+warnings.simplefilter("ignore")
+
 ###############
 # Filtering & Sampling Params
 ###############
@@ -78,20 +81,20 @@ def processSensorValue(stack, error, value, value_type):
 # Dataset processing
 ###############
 def timestampToSeconds(timestamp_begin, timestamp):
-    b = datetime.fromtimestamp(timestamp_begin/1000)
-    e = datetime.fromtimestamp(timestamp/1000)
+    b = datetime.fromtimestamp(timestamp_begin)
+    e = datetime.fromtimestamp(timestamp)
     return (e-b).total_seconds()
 
 
 def generatePlots(dataset, data_type):
-    plot_rows = 3
-    plot_columns = 4
+    plot_rows = 5
+    plot_columns = 5
     reduce_rate = 1
     for r in np.arange(plot_rows):
         for c in np.arange(plot_columns):
             temp_dataset = dataset.iloc[::reduce_rate, :]
             freq = dataset['timestamp'].mean()/len(temp_dataset.index)
-            print('generating plot at frequency s='+str(freq)+'...')
+            print('generating '+data_type+' plot from data with sampling frequency s='+str(freq)+'...')
             temp_dataset = processDataset(temp_dataset)
             axes[r, c].set_title(data_type + ' at sampling frequency '+str(round(freq, 2))+' (s)')
             sns.scatterplot(ax=axes[r, c], data=temp_dataset, x='timestamp', y=data_type, hue='type', s=10)
@@ -147,19 +150,19 @@ def processDataset(dataset):
             dataset.at[key, 'reset'] = 'True'
         if(dht22_hum_stack_errors >= 3):
             dataset.at[key, 'reset'] = 'True'
-
     return dataset
 
 
 dataset_dir = 'datasets/'
 plots_dir = 'plots/'
-dataset = pd.read_csv(dataset_dir+'dataset.csv')
+filename = '2021-01-30T20-08-36Z_recording'
+dataset = pd.read_csv(dataset_dir+filename+'.csv')
 dataset['timestamp'] = np.vectorize(timestampToSeconds)(dataset['timestamp'][0], dataset['timestamp'])
 print('formatted timestamps into seconds...')
-fig, axes = plt.subplots(3, 4, figsize=(50, 25))
+fig, axes = plt.subplots(5, 5, figsize=(50, 25))
 generatePlots(dataset, 'temperature')
-plt.savefig(plots_dir+'temperature.png')
+plt.savefig(plots_dir+filename+'_temperature.png')
 plt.clf()
-fig, axes = plt.subplots(3, 4, sharex=True, figsize=(50, 25))
+fig, axes = plt.subplots(5, 5, sharex=True, figsize=(50, 25))
 generatePlots(dataset, 'humidity')
-plt.savefig(plots_dir+'humidity.png')
+plt.savefig(plots_dir+filename+'_humidity.png')

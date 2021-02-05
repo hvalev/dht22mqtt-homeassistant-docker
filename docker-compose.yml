@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   dht22mqtt:
-    build: .
+    image: hvalev/dht22mqtt-homeassistant
     container_name: dht22mqtt
     devices:
       - /dev/gpiomem:/dev/gpiomem
@@ -15,5 +15,6 @@ services:
       - unit=C
       - mqtt_chatter='essential|ha|full'
       - logging=log2stdout|log2file
+      - filtering=enabled
     volumes:
       - ~/dht22mqttlog:/log

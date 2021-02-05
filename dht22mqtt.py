@@ -42,6 +42,7 @@ dht22mqtt_sensor_tally = dict()
 ###############
 # Filtering & Sampling Params
 ###############
+dht22mqtt_filtering_enabled = str(os.getenv('filtering', 'enabled')).lower()
 dht22_temp_stack = []
 dht22_temp_stack_errors = 0
 dht22_hum_stack = []
@@ -136,6 +137,10 @@ def updateEssentialMqtt(temperature, humidity, detected):
             payload = '{ "temperature": '+str(temperature)+', "humidity": '+str(humidity)+' }'
             client.publish(mqtt_topic + 'value', payload, qos=1, retain=True)
             client.publish(mqtt_topic + "detected", str(detected), qos=1, retain=True)
+        elif(detected == 'bypass'):
+            payload = '{ "temperature": '+str(temperature)+', "humidity": '+str(humidity)+' }'
+            client.publish(mqtt_topic + 'value', payload, qos=1, retain=True)
+            client.publish(mqtt_topic + "detected", str(detected), qos=1, retain=True)
         else:
             client.publish(mqtt_topic + "detected", str(detected), qos=1, retain=True)
         client.publish(mqtt_topic + "updated", str(datetime.now()), qos=1, retain=True)
@@ -158,17 +163,13 @@ def registerWithHomeAssitant():
         log2stdout(datetime.now().timestamp(), 'Registering sensor with home assistant success...')
 
 
-def updateFullSysInternalsMqtt():
+def updateFullSysInternalsMqtt(key):
     if('full' in dht22mqtt_mqtt_chatter):
         client.publish(mqtt_topic + "sys/temperature_stack_size", len(dht22_temp_stack), qos=1, retain=True)
         client.publish(mqtt_topic + "sys/temperature_error_count", dht22_temp_stack_errors, qos=1, retain=True)
         client.publish(mqtt_topic + "sys/humidity_stack_size", len(dht22_hum_stack), qos=1, retain=True)
         client.publish(mqtt_topic + "sys/humidity_error_count", dht22_hum_stack_errors, qos=1, retain=True)
         client.publish(mqtt_topic + "updated", str(datetime.now()), qos=1, retain=True)
-
-
-def updateFullSensorTallyMqtt(key):
-    if('full' in dht22mqtt_mqtt_chatter):
         if key in dht22mqtt_sensor_tally:
             dht22mqtt_sensor_tally[key] += 1
         else:
@@ -197,7 +198,7 @@ log2stdout(datetime.now().timestamp(), 'Setup dht22 sensor success...')
 if('essential' in dht22mqtt_mqtt_chatter):
     client = mqtt.Client('DHT22', clean_session=True, userdata=None)
 
-    # set last will for a disgraceful exit
+    # set last will for an ungraceful exit
     client.will_set(mqtt_topic + "state", "OFFLINE", qos=1, retain=True)
 
     # keep alive for 60 times the refresh rate
@@ -260,9 +261,12 @@ while True:
         else:
             detected = 'outlier'
 
-        updateEssentialMqtt(temperature, humidity, detected)
-        updateFullSysInternalsMqtt()
-        updateFullSensorTallyMqtt(detected)
+        # Check if filtering enabled
+        if('enabled' in dht22mqtt_filtering_enabled):
+            updateEssentialMqtt(temperature, humidity, detected)
+        else:
+            updateEssentialMqtt(temperature, humidity, 'bypass')
+        updateFullSysInternalsMqtt(detected)
 
         data = {'timestamp': dht22_ts,
                 'temperature': temperature,
@@ -278,7 +282,7 @@ while True:
         # DHT22 throws errors often. Keep reading.
         detected = 'error'
         updateEssentialMqtt(None, None, detected)
-        updateFullSensorTallyMqtt(error.args[0])
+        updateFullSysInternalsMqtt(error.args[0])
 
         data = {'timestamp': dht22_ts, 'error_type': error.args[0]}
         log2stdout(dht22_ts, data)
