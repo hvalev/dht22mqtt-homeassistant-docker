@@ -1,7 +1,6 @@
 # dht22 temperature/humidity sensor in a docker container
 ![build](https://github.com/hvalev/dht22mqtt-homeassistant/workflows/build/badge.svg)
 ![Docker Pulls](https://img.shields.io/docker/pulls/hvalev/dht22mqtt-homeassistant)
-![Docker Stars](https://img.shields.io/docker/stars/hvalev/dht22mqtt-homeassistant)
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/hvalev/dht22mqtt-homeassistant)
 
 This docker container enables you to use the DHT11, DHT22 or AM2302 temperature and humidity sensors on a GPIO enabled device such as raspberry pi. The container features a robust scheme to detect outliers and filter data in real-time. Additionally, this container can communicate with an MQTT broker and relay the sensors' values and integrates with home assistants' [auto-discovery](https://www.home-assistant.io/docs/mqtt/discovery/) protocol. Discovery will automatically detects the sensor and makes it available for visualizations, automations, etc.
