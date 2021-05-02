@@ -31,6 +31,8 @@ The container offers the following configurable environment variables:</br>
 | ```topic``` |  | MQTT topic to submit to. | ```zigbee2mqtt```  |
 | ```device_id``` |  | Unique identifier for the device. \*If you have multiple, you could use something like ```bedroom_dht22```. | ```dht22``` |
 | ```broker``` |  | MQTT broker ip address. | ```192.168.1.10``` |
+| ```username``` |  | MQTT username. | `None` |
+| ```password``` |  | MQTT password. | `None` |
 | ```pin``` |  | GPIO data pin your sensor is hooked up to. | ```4``` |
 | ```poll``` |  | Sampling rate in seconds. Recommended is the range between 2 to 30 seconds. Further information: [*DHT11/DHT22/AM2302 spec sheet.*](https://lastminuteengineers.com/dht11-dht22-arduino-tutorial/) | ```2``` |
 | ```device_type``` | ```dht11``` or ```dht22``` | Sensor type. ```dht22``` also also works for AM2302 | ```dht22``` |

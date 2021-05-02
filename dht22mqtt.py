@@ -18,6 +18,8 @@ dht22mqtt_start_ts = datetime.now()
 mqtt_topic = os.getenv('topic', 'zigbee2mqtt/')
 mqtt_device_id = os.getenv('device_id', 'dht22')
 mqtt_brokeraddr = os.getenv('broker', '192.168.1.10')
+mqtt_username = os.getenv('username', None)
+mqtt_password = os.getenv('password', None)
 if not mqtt_topic.endswith('/'):
     mqtt_topic = mqtt_topic + "/"
 mqtt_topic = mqtt_topic + mqtt_device_id + '/'
@@ -198,6 +200,9 @@ log2stdout(datetime.now().timestamp(), 'Setup dht22 sensor success...')
 if('essential' in dht22mqtt_mqtt_chatter):
     client = mqtt.Client('DHT22', clean_session=True, userdata=None)
 
+    if mqtt_username:
+        client.username_pw_set(username=mqtt_username, password=mqtt_password)
+
     # set last will for an ungraceful exit
     client.will_set(mqtt_topic + "state", "OFFLINE", qos=1, retain=True)
 
@@ -212,6 +217,7 @@ if('essential' in dht22mqtt_mqtt_chatter):
     if('full' in dht22mqtt_mqtt_chatter):
         client.publish(mqtt_topic + "env/pin", dht22mqtt_pin, qos=1, retain=True)
         client.publish(mqtt_topic + "env/brokeraddr", mqtt_brokeraddr, qos=1, retain=True)
+        client.publish(mqtt_topic + "env/username", mqtt_username, qos=1, retain=True)
         client.publish(mqtt_topic + "env/refresh", dht22mqtt_refresh, qos=1, retain=True)
         client.publish(mqtt_topic + "env/logging", dht22mqtt_logging_mode, qos=1, retain=True)
         client.publish(mqtt_topic + "env/mqtt_chatter", dht22mqtt_mqtt_chatter, qos=1, retain=True)
