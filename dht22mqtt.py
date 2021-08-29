@@ -198,7 +198,7 @@ log2stdout(datetime.now().timestamp(), 'Setup dht22 sensor success...')
 # Setup mqtt client
 ###############
 if('essential' in dht22mqtt_mqtt_chatter):
-    client = mqtt.Client('DHT22', clean_session=True, userdata=None)
+    client = mqtt.Client(mqtt_device_id, clean_session=True, userdata=None)
 
     if mqtt_username:
         client.username_pw_set(username=mqtt_username, password=mqtt_password)
