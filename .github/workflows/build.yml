@@ -1,11 +1,11 @@
 name: build
 on:
   push:
-    tags:
-      - 'v*'
     paths-ignore:
-    - 'README.md'
-    - datasets/**
+      - 'README.md'
+      - datasets/**
+    tags:
+      - '**'
 
 jobs:
   test:
@@ -28,38 +28,30 @@ jobs:
     runs-on: ubuntu-18.04
     needs: test
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      - 
-        name: Get Version
+      - name: Get Version
         id: get_version
         uses: battila7/get-version-action@v2.3.0
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Available platforms
+      - name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: Login to DockerHub
+      - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUBUNAME }}
           password: ${{ secrets.DOCKERHUBTOKEN }} 
-      -
-        name: Run Buildx
+      - name: Run Buildx
         run: |
           docker buildx build --push \
           --tag hvalev/dht22mqtt-homeassistant:latest \
           --tag hvalev/dht22mqtt-homeassistant:${{ steps.get_version.outputs.version-without-v }} \
           --platform linux/arm/v7,linux/arm64 .
-      - 
-        name: Docker Hub Description
+      - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v2
         env:
            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUBUNAME }}
