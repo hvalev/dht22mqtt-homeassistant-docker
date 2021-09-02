@@ -29,7 +29,7 @@ The container offers the following configurable environment variables:</br>
 | Parameter | Possible values | Description | Default |
 | --------- | --------------- | ----------- | ------- |
 | ```topic``` |  | MQTT topic to submit to. | ```zigbee2mqtt```  |
-| ```device_id``` |  | Unique identifier for the device. \*If you have multiple, you could use something like ```bedroom_dht22```. | ```dht22``` |
+| ```device_id``` |  | Unique identifier for the device. *If you have multiple, you could use something like ```bedroom_dht22```.* | ```dht22``` |
 | ```broker``` |  | MQTT broker ip address. | ```192.168.1.10``` |
 | ```username``` |  | MQTT username. | `None` |
 | ```password``` |  | MQTT password. | `None` |
