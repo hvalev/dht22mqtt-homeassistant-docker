@@ -72,11 +72,11 @@ def log2file(filename, params):
 def log2stdout(timestamp, msg, type):
     if('log2stdout' in dht22mqtt_logging_mode):
         if type == 'info':
-            logging.info(datetime.fromtimestamp(timestamp).strftime('%Y-%m-%dT%H:%M:%SZ'), str(msg))
+            logging.info(datetime.fromtimestamp(timestamp).strftime('%Y-%m-%dT%H:%M:%SZ')+' '+str(msg))
         if type == 'warning':
-            logging.warning(datetime.fromtimestamp(timestamp).strftime('%Y-%m-%dT%H:%M:%SZ'), str(msg))
+            logging.warning(datetime.fromtimestamp(timestamp).strftime('%Y-%m-%dT%H:%M:%SZ')+' '+str(msg))
         if type == 'error':
-            logging.error(datetime.fromtimestamp(timestamp).strftime('%Y-%m-%dT%H:%M:%SZ'), str(msg))
+            logging.error(datetime.fromtimestamp(timestamp).strftime('%Y-%m-%dT%H:%M:%SZ')+' '+str(msg))
 
 
 ###############
