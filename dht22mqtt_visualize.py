@@ -31,7 +31,7 @@ def getTemperatureJitter(temperature):
 
 
 def getTemperature(temperature):
-    if(dht22mqtt_temp_unit == 'F'):
+    if dht22mqtt_temp_unit == 'F':
         temperature = temperature * (9 / 5) + 32
     return temperature
 
@@ -42,16 +42,16 @@ def getHumidity(humidity):
 
 def processSensorValue(stack, error, value, value_type):
     # flush stack on accumulation of errors
-    if(error >= dht22_error_count_stack_flush):
+    if error >= dht22_error_count_stack_flush:
         stack = []
         error = 0
 
     # init stack
-    if(len(stack) <= dht22_error_count_stack_flush):
-        if(value not in stack):
+    if len(stack) <= dht22_error_count_stack_flush:
+        if value not in stack:
             stack.append(value)
         # use jitter for bootstrap temperature stack
-        if(value_type == 'temperature'):
+        if value_type == 'temperature':
             low, high = getTemperatureJitter(value)
             stack.append(low)
             stack.append(high)
@@ -62,9 +62,9 @@ def processSensorValue(stack, error, value, value_type):
     mean = statistics.mean(stack)
 
     # compute if outlier or not
-    if(mean-std*dht22_std_deviation < value < mean+std*dht22_std_deviation):
+    if mean-std*dht22_std_deviation < value < mean+std*dht22_std_deviation:
         outlier = False
-        if(value not in stack):
+        if value not in stack:
             stack.append(value)
         error = 0
     else:
@@ -72,7 +72,7 @@ def processSensorValue(stack, error, value, value_type):
         error += 1
 
     # remove oldest element from stack
-    if(len(stack) > 10):
+    if len(stack) > 10:
         stack.pop(0)
     return stack, error, outlier
 
@@ -137,18 +137,18 @@ def processDataset(dataset):
         dataset.at[key, 'humidity_outlier'] = humidity_outlier
 
         # record outlier detection source
-        if(temperature_outlier and humidity_outlier):
+        if temperature_outlier and humidity_outlier:
             dataset.at[key, 'type'] = 'both outlier'
-        elif(temperature_outlier):
+        elif temperature_outlier:
             dataset.at[key, 'type'] = 'temperature outlier'
-        elif(humidity_outlier):
+        elif humidity_outlier:
             dataset.at[key, 'type'] = 'humidity outlier'
         else:
             dataset.at[key, 'type'] = 'accurate'
         # record reset pivots
-        if(dht22_temp_stack_errors >= 3):
+        if dht22_temp_stack_errors >= 3:
             dataset.at[key, 'reset'] = 'True'
-        if(dht22_hum_stack_errors >= 3):
+        if dht22_hum_stack_errors >= 3:
             dataset.at[key, 'reset'] = 'True'
     return dataset
 
