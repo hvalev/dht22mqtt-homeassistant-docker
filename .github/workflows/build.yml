@@ -52,7 +52,7 @@ jobs:
           --tag hvalev/dht22mqtt-homeassistant:${{ steps.get_version.outputs.version-without-v }} \
           --platform linux/arm/v7,linux/arm64 .
       - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v3
+        uses: peter-evans/dockerhub-description@v4
         env:
            DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUBUNAME }}
            DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUBPWD }}
