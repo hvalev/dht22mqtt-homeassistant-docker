@@ -1,5 +1,5 @@
 adafruit-circuitpython-dht==4.0.4
-paho-mqtt==1.6.1
+paho-mqtt==2.0.0
 # pre-release to support raspberry pi 4
 # https://sourceforge.net/p/raspberry-gpio-python/tickets/190/
 rpi.gpio==0.7.1
