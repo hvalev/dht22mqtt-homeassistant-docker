@@ -7,8 +7,10 @@ This docker container enables you to use the DHT11, DHT22 or AM2302 temperature 
 
 ## How to run it
 The following docker run command or docker-compose service will get you up and running with the minimal configuration.
-```docker run --device=/dev/gpiomem:/dev/gpiomem -e topic=zigbee2mqtt -e device_id=dht22 -e broker=192.168.X.X -e pin=4 hvalev/dht22mqtt-homeassistant```
+```bash
+docker run --device=/dev/gpiomem:/dev/gpiomem -e topic=zigbee2mqtt -e device_id=dht22 -e broker=192.168.X.X -e pin=4 hvalev/dht22mqtt-homeassistant
 ```
+```yaml
 version: "3.8"
 services:
   dht22mqtt:
